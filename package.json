@@ -1,0 +1,14 @@
+{
+  "name": "fastRequire",
+  "version": "1.0.0",
+  "description": "Automatically require all packages from your package.json",
+  "main": "index.js",
+  "scripts": {
+    "test": "./test.js"
+  },
+  "author": "Slava Ganzin <slava.ganzin@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.2.0"
+  }
+}
