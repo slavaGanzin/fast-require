@@ -106,3 +106,11 @@ const options = {
 // $.get, $.post, $.head (all function from request). But not $.request
 const $ = require('fast-require')(options)
 ```
+
+#### 7. install
+
+Automatically installs missing dependencies
+
+```js
+const $ = require('fast-require')({install: true})
+```

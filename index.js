@@ -1,13 +1,14 @@
 const path = require('path')
 
 module.exports = options => {
-  const {only, without, search, globally, as, toRoot} = Object.assign({
+  const {only, without, search, globally, as, toRoot, install} = Object.assign({
     only:     null,
     without:  [],
     search:   [process.cwd()],
     globally: false,
     as:       {},
     toRoot:   [],
+    install:  false,
   }, options)
 
   const packages = globally ? global : {}
@@ -26,7 +27,20 @@ module.exports = options => {
       if (!only && without.indexOf(package) > -1) continue
 
       const name = as[package] || package.replace(/(\.|-)([^-])/g, (all, dash, symbol) => symbol.toUpperCase())
-      const module = require(require.resolve(package, {paths: [dir]}))
+      let _path = null
+
+      try {
+        _path = require.resolve(package, {paths: [dir]})
+      } catch (e) {
+        if (install) {
+          console.error(String(require('child_process').execSync(
+            `npm install ${package}`, {cwd: dir}))
+          )
+        }
+        _path = path.resolve(`${dir}/node_modules/${package}`)
+      }
+
+      const module = require(_path)
 
       if (toRoot.indexOf(package) > -1) {
         for (const f in module)
