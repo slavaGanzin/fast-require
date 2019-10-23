@@ -1,5 +1,8 @@
 # fast-require
 Automatically require all packages from your package.json
+[![Build Status](https://img.shields.io/travis/slavaGanzin/fast-require/master.svg)](https://travis-ci.org/slavaGanzin/fast-require)
+[![NPM version](https://img.shields.io/npm/v/fast-require.svg)](https://www.npmjs.org/package/fast-require)
+
 
 Inspired by: https://github.com/viktor-ku/auto-require/
 
