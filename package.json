@@ -4,7 +4,7 @@
   "description": "Automatically require all packages from your package.json",
   "main": "index.js",
   "scripts": {
-    "test": "./test.js"
+    "test": "cd folder; npm install; cd ..; ./test.js"
   },
   "author": "Slava Ganzin <slava.ganzin@gmail.com>",
   "license": "ISC",

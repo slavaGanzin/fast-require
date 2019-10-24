@@ -85,3 +85,5 @@ cp.execSync('rm -rf no_node_modules/node_modules; true')
 const install = fastRequire({install: true, search: ['no_node_modules']})
 
 install.should.have.property('fastRequire')
+
+console.log(require('fs').readFileSync(__filename, 'utf-8'))
