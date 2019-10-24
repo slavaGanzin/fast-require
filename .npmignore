@@ -2,3 +2,5 @@ no_node_modules
 folder
 node_modules
 test.js
+.eslintrc
+.travis.yml
