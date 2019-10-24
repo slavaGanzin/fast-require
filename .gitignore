@@ -58,6 +58,5 @@ typings/
 .env
 
 # next.js build output
+
 .next
-no_node_modules
-folder
