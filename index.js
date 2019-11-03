@@ -1,15 +1,18 @@
 const path = require('path')
 
 module.exports = options => {
-  const {only, without, search, globally, as, toRoot, install} = Object.assign({
+  const {only, without, search, globally, as, toRoot, install, verbose} = Object.assign({
     only:     null,
     without:  [],
     search:   [process.cwd()],
     globally: false,
     as:       {},
     toRoot:   [],
-    install:  false,
+    install:  true,
+    verbose:  true,
   }, options)
+
+  const start = (new Date()).getTime()
 
   const packages = globally ? global : {}
 
@@ -49,6 +52,8 @@ module.exports = options => {
         packages[name] = module
     }
   }
+
+  console.error(`All packages loaded: ${(new Date()).getTime() - start}ms`)
 
   return packages
 }
