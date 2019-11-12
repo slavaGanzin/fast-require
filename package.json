@@ -1,6 +1,6 @@
 {
   "name": "fast-require",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "Automatically require all packages from your package.json",
   "main": "index.js",
   "scripts": {

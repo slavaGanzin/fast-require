@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = options => {
-  const {only, without, search, globally, as, toRoot, install, verbose} = Object.assign({
+  const {only, without, search, globally, as, toRoot, install, verbose} = options = Object.assign({
     only:     null,
     without:  [],
     search:   [process.cwd()],
@@ -10,6 +10,7 @@ module.exports = options => {
     toRoot:   [],
     install:  true,
     verbose:  true,
+    require:  null,
   }, options)
 
   const start = (new Date()).getTime()
@@ -26,7 +27,14 @@ module.exports = options => {
       }
     }
 
-    for (const package in only || Object.assign(packageJSON.dependencies || {}, packageJSON.devDependencies || {})) {
+    if (options.require) {
+      for (const i in options.require) {
+        options.require[options.require[i]] = options.require[i]
+        delete options.require[i]
+      }
+    }
+
+    for (const package in only || Object.assign(packageJSON.dependencies || {}, packageJSON.devDependencies || {}, options.require)) {
       if (!only && without.indexOf(package) > -1) continue
 
       const name = as[package] || package.replace(/(\.|-)([^-])/g, (all, dash, symbol) => symbol.toUpperCase())

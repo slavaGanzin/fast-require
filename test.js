@@ -86,4 +86,8 @@ const install = fastRequire({install: true, search: ['no_node_modules']})
 
 install.should.have.property('fastRequire')
 
+const _require = fastRequire({require: ['fs']})
+
+_require.should.have.property('fs')
+
 console.log(require('fs').readFileSync(__filename, 'utf-8'))

@@ -115,3 +115,11 @@ Automatically installs missing dependencies
 ```js
 const $ = require('fast-require')({install: true})
 ```
+
+#### 8. require
+
+Require additional modules, like globally install or core ones
+
+```js
+const $ = require('fast-require')({require: ['fs']})
+```
