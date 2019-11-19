@@ -3,7 +3,7 @@
 require('chai').should()
 
 const R = require('./folder/node_modules/ramda')
-const fastRequire = require('./index')
+const fastRequire = R.pipe(R.tap(x => console.log('fastRequire(', x, ')')), require('./index'))
 const cp = require('child_process')
 
 const basic = fastRequire()

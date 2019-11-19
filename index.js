@@ -33,8 +33,10 @@ module.exports = options => {
         delete options.require[i]
       }
     }
+    const deps = only || Object.assign(packageJSON.dependencies || {}, packageJSON.devDependencies || {}, options.require)
 
-    for (const package in only || Object.assign(packageJSON.dependencies || {}, packageJSON.devDependencies || {}, options.require)) {
+
+    for (const package in deps) {
       if (!only && without.indexOf(package) > -1) continue
 
       const name = as[package] || package.replace(/(\.|-)([^-])/g, (all, dash, symbol) => symbol.toUpperCase())
@@ -44,9 +46,11 @@ module.exports = options => {
         _path = require.resolve(package, {paths: [dir]})
       } catch (e) {
         if (install) {
-          console.error(String(require('child_process').execSync(
-            `npm install ${package}`, {cwd: dir}))
-          )
+          console.error(`fast-require: npm install`)
+          require.cache = {}
+          require('child_process').execSync('npm install', {cwd: dir, stdio: 'inherit'})
+          if (options.require)
+            require('child_process').execSync(`npm install ${options.require.join(' ')}`, {cwd: dir, stdio: 'inherit'})
         }
         _path = path.resolve(`${dir}/node_modules/${package}`)
       }
