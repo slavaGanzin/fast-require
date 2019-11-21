@@ -68,7 +68,7 @@ for (const f in R) {
     global.should.not.have.property(f)
 }
 
-const ramdaToGlobal = fastRequire({toRoot: ['ramda'], search: ['folder'], globally: true})
+const ramdaToGlobal = fastRequire({toRoot: ['ramda'], search: ['folder'], global: true})
 
 ramdaToGlobal.should.not.have.property('ramda')
 global.should.not.have.property('ramda')
