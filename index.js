@@ -17,6 +17,7 @@ module.exports = options => {
   const start = (new Date()).getTime()
 
   const packages = options.global ? global : {}
+  const V = verbose ? console.error : () => {}
 
 
   for (let dir of search) {
@@ -51,13 +52,12 @@ module.exports = options => {
         if (install) {
           const cmd = `npm install ${package}`
 
-          console.error(`fast-require: ${cmd}`)
+          V(`fast-require: ${cmd}`)
           require.cache = {}
           require('child_process').execSync(cmd, {cwd: dir, stdio: 'inherit'})
           if (options.require)
             require('child_process').execSync(`npm install ${options.require.join(' ')}`, {cwd: dir, stdio: 'inherit'})
 
-          console.log(dir)
           _path = require.resolve(package, {paths: [dir]})
         }
       }
@@ -70,7 +70,7 @@ module.exports = options => {
         for (const f in module)
           packages[f] = module[f]
 
-        if (verbose) console.error(`${name} loaded to root ${new Date() - start}ms`)
+        V(`fast-require: ${name}\t${new Date() - start}ms`)
       } else if (!lazy)
         packages[name] = require(package)
       else {
@@ -78,20 +78,23 @@ module.exports = options => {
 
         Object.defineProperty(packages, name, {
           set: () => {
-            throw new Error(`${name} in use by ${package} package`)
+            throw new Error(`fast-require: ${name} in use by ${package} package`)
           },
           get: () => {
-            const start = new Date()
+            if (!module) {
+              const start = new Date()
 
-            if (!module) module = require(_path)
-            if (verbose) console.error(`${name} loaded ${new Date() - start}ms`)
+              module = require(_path)
+              V(`fast-require: ${name} \t ${new Date() - start}ms`)
+            }
+
             return module
           }})
       }
     }
   }
 
-  if (verbose) console.error(`fast-require: ${(new Date()).getTime() - start}ms`)
+  V(`fast-require: initialization\t${(new Date()).getTime() - start}ms`)
 
   return packages
 }
