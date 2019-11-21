@@ -1,11 +1,11 @@
 const path = require('path')
 
 module.exports = options => {
-  const {only, without, search, globally, as, toRoot, install, verbose, lazy} = options = Object.assign({
+  const {only, without, search, as, toRoot, install, verbose, lazy} = options = Object.assign({
     only:     null,
     without:  [],
     search:   [process.cwd()],
-    globally: false,
+    global:  false,
     as:       {},
     toRoot:   [],
     install:  true,
@@ -16,7 +16,7 @@ module.exports = options => {
 
   const start = (new Date()).getTime()
 
-  const packages = globally ? global : {}
+  const packages = options.global ? global : {}
 
 
   for (let dir of search) {
@@ -39,7 +39,7 @@ module.exports = options => {
     const deps = only || Object.assign(packageJSON.dependencies || {}, packageJSON.devDependencies || {}, options.require)
 
     for (const package in deps) {
-      if (!only && without.indexOf(package) > -1) continue
+      if (without.indexOf(package) > -1) continue
 
       const name = as[package] || package.replace(/(\.|-)([^-])/g, (all, dash, symbol) => symbol.toUpperCase())
       let _path = null
@@ -91,7 +91,7 @@ module.exports = options => {
     }
   }
 
-  console.error(`All packages loaded: ${(new Date()).getTime() - start}ms`)
+  if (verbose) console.error(`fast-require: ${(new Date()).getTime() - start}ms`)
 
   return packages
 }

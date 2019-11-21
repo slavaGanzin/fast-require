@@ -1,7 +1,7 @@
 {
   "name": "fast-require",
-  "version": "1.2.0",
-  "description": "Automatically require all packages from your package.json",
+  "version": "1.2.1",
+  "description": "Lazy require all packages from your package.json",
   "main": "index.js",
   "scripts": {
     "test": "cd folder; npm install; cd ..; ./test.js"
