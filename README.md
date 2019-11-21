@@ -123,3 +123,11 @@ Require additional modules, like globally install or core ones
 ```js
 const $ = require('fast-require')({require: ['fs']})
 ```
+
+#### 9. lazy
+
+If set to false all packages loads at once on initialization. Default: true
+
+```js
+const $ = require('fast-require')({lazy: false})
+```
