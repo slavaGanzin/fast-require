@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = options => {
-  const {only, without, search, as, toRoot, install, verbose, lazy} = options = Object.assign({
+  const {only, without, search, as, toRoot, install, verbose, lazy, patch} = options = Object.assign({
     only:     null,
     without:  [],
     search:   [process.cwd()],
@@ -12,9 +12,10 @@ module.exports = options => {
     verbose:  true,
     require:  null,
     lazy:     true,
+    patch:   {},
   }, options)
 
-  const start = (new Date()).getTime()
+  let initialization = (new Date()).getTime()
 
   const packages = options.global ? global : {}
   const V = verbose ? console.error : () => {}
@@ -63,29 +64,32 @@ module.exports = options => {
       }
 
 
+      const p = patch[name] ? patch[name] : x => x
+
       if (toRoot.indexOf(package) > -1) {
         const start = new Date()
-        const module = require(_path)
+        const module = p(require(_path))
 
         for (const f in module)
           packages[f] = module[f]
 
-        V(`fast-require: ${name}\t${new Date() - start}ms`)
+        // initialization -= new Date() - start
+        V(`fast-require: ${new Date() - start}ms\t${name}`)
       } else if (!lazy)
-        packages[name] = require(package)
+        packages[name] = p(require(package))
       else {
         let module
 
         Object.defineProperty(packages, name, {
           set: () => {
-            throw new Error(`fast-require: ${name} in use by ${package} package`)
+            throw new Error(`fast-require: Do not override ${name}! Reserved by ${package} package`)
           },
           get: () => {
             if (!module) {
               const start = new Date()
 
-              module = require(_path)
-              V(`fast-require: ${name} \t ${new Date() - start}ms`)
+              module = p(require(_path))
+              V(`fast-require: ${new Date() - start}ms\t${name}`)
             }
 
             return module
@@ -94,7 +98,7 @@ module.exports = options => {
     }
   }
 
-  V(`fast-require: initialization\t${(new Date()).getTime() - start}ms`)
+  V(`fast-require: \t${(new Date()).getTime() - initialization}ms\tinit`)
 
   return packages
 }

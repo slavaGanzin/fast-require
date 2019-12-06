@@ -99,3 +99,16 @@ $.gulp //gulp required
 $.gulpNotify //gulp-notify required
 
 ```
+
+#### Patch module
+```js
+const $ = fastRequire({patch: {
+  chai: x => {
+    x.patchedMethod = () => 'patched return'
+    return x
+  },
+
+  fs: require('thenifyAll')
+}})
+
+```

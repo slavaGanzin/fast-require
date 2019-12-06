@@ -90,4 +90,12 @@ const _require = fastRequire({require: ['fs']})
 
 _require.should.have.property('fs')
 
+
+const patch = fastRequire({patch: {chai: x => {
+  x.patchedMethod = () => 'patched return'
+  return x
+}}})
+
+String(patch.chai.patchedMethod()).should.equal('patched return')
+
 console.log(require('fs').readFileSync(__filename, 'utf-8'))
