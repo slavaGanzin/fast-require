@@ -6,6 +6,7 @@ const R = require('./folder/node_modules/ramda')
 const fastRequire = R.pipe(R.tap(x => console.log('fastRequire(', x, ')')), require('./index'))
 const cp = require('child_process')
 
+cp.execSync('rm -rf no_node_modules/node_modules')
 const basic = fastRequire()
 
 basic.should.have.property('chai')
@@ -82,9 +83,9 @@ for (const f in R)
 
 
 // cp.execSync('rm -rf no_node_modules/node_modules; true')
-const install = fastRequire({install: true, search: ['no_node_modules']})
-
-install.should.have.property('fastRequire')
+// const install = fastRequire({install: true, search: ['no_node_modules']})
+//
+// install.should.have.property('fastRequire')
 
 const _require = fastRequire({require: ['fs']})
 

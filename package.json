@@ -10,5 +10,8 @@
   "license": "ISC",
   "devDependencies": {
     "chai": "^4.2.0"
+  },
+  "dependencies": {
+    "decache": "^4.5.1"
   }
 }
