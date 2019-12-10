@@ -53,7 +53,7 @@ module.exports = options => {
         if (install) {
           const cmd = `npm install ${package}`
 
-          V(`fast-require: ${cmd}`)
+          V(`fast-require:\t${cmd}`)
           require.cache = {}
           require('child_process').execSync(cmd, {cwd: dir, stdio: 'inherit'})
           if (options.require)
@@ -73,8 +73,10 @@ module.exports = options => {
         for (const f in module)
           packages[f] = module[f]
 
-        // initialization -= new Date() - start
-        V(`fast-require: ${new Date() - start}ms\t${name}`)
+        const toRootTime = new Date() - start
+
+        initialization += toRootTime
+        V(`fast-require:\t${toRootTime}ms\t${name}`)
       } else if (!lazy)
         packages[name] = p(require(package))
       else {
@@ -82,14 +84,14 @@ module.exports = options => {
 
         Object.defineProperty(packages, name, {
           set: () => {
-            throw new Error(`fast-require: Do not override ${name}! Reserved by ${package} package`)
+            throw new Error(`fast-require:\tDo not override ${name}! Reserved by ${package} package`)
           },
           get: () => {
             if (!module) {
               const start = new Date()
 
               module = p(require(_path))
-              V(`fast-require: ${new Date() - start}ms\t${name}`)
+              V(`fast-require:\t${new Date() - start}ms\t${name}`)
             }
 
             return module
