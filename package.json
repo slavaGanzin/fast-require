@@ -1,6 +1,6 @@
 {
   "name": "fast-require",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Lazy require all packages from your package.json",
   "main": "index.js",
   "scripts": {
@@ -11,8 +11,5 @@
   "devDependencies": {
     "chai": "^4.2.0"
   },
-  "dependencies": {
-    "decache": "^4.5.1",
-    "ramda": "^0.26.1"
-  }
+  "dependencies": {}
 }

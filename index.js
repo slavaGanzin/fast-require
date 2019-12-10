@@ -70,8 +70,14 @@ module.exports = options => {
         const start = new Date()
         const module = p(require(_path))
 
-        for (const f in module)
-          packages[f] = module[f]
+        for (const f in module) {
+          Object.defineProperty(packages, f, {
+            set: () => {
+              throw new Error(`fast-require:\tDo not override ${f}! Reserved by ${package} package`)
+            },
+            get: () => module[f],
+          })
+        }
 
         const toRootTime = new Date() - start
 
