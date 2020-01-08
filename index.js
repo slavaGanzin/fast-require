@@ -9,7 +9,7 @@ module.exports = options => {
     as:       {},
     toRoot:   [],
     install:  true,
-    verbose:  true,
+    verbose:  false,
     require:  null,
     lazy:     true,
     patch:   {},
