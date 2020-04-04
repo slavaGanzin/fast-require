@@ -4,7 +4,7 @@ module.exports = options => {
   const {only, without, search, as, toRoot, install, verbose, lazy, patch} = options = Object.assign({
     only:     null,
     without:  [],
-    search:   [process.cwd()],
+    search:   [process.cwd()], //__dirname
     global:  false,
     as:       {},
     toRoot:   [],
@@ -15,7 +15,7 @@ module.exports = options => {
     patch:   {},
   }, options)
 
-  let initialization = (new Date()).getTime()
+  let initialization = new Date().getTime()
 
   const packages = options.global ? global : {}
   const V = verbose ? console.error : () => {}
@@ -41,7 +41,7 @@ module.exports = options => {
     const deps = only || Object.assign(packageJSON.dependencies || {}, packageJSON.devDependencies || {}, options.require)
 
     for (const package in deps) {
-      if (without.indexOf(package) > -1) continue
+      if (without.indexOf(package) > -1 || package == 'fast-require') continue
 
       const name = as[package] || package.replace(/(\.|-)([^-])/g, (all, dash, symbol) => symbol.toUpperCase())
       let _path = null
@@ -88,6 +88,16 @@ module.exports = options => {
       else {
         let module
 
+        if (packages[name]) {
+          try {
+            packages[name] = 'test'
+          } catch (e) {
+            if (new RegExp(`fast-require.*${package}`).test(e)) return
+          }
+
+          throw new Error(`fast-require:\tTrying to override ${package} which was already defined`)
+        }
+
         Object.defineProperty(packages, name, {
           set: () => {
             throw new Error(`fast-require:\tDo not override ${name}! Reserved by ${package} package`)
@@ -106,7 +116,7 @@ module.exports = options => {
     }
   }
 
-  V(`fast-require: \t${(new Date()).getTime() - initialization}ms\tinit`)
+  V(`fast-require: \t${new Date().getTime() - initialization}ms\tinit`)
 
   return packages
 }
