@@ -51,13 +51,13 @@ module.exports = options => {
         _path = require.resolve(package, {paths: [dir]})
       } catch (e) {
         if (install) {
-          const cmd = `npm install ${package}`
+          const cmd = `npm install ${package} --production`
 
           V(`fast-require:\t${cmd}`)
           require.cache = {}
           require('child_process').execSync(cmd, {cwd: dir, stdio: 'inherit'})
-          if (options.require)
-            require('child_process').execSync(`npm install ${options.require.join(' ')}`, {cwd: dir, stdio: 'inherit'})
+          // if (options.require)
+          //   require('child_process').execSync(`npm install ${options.require.join(' ')}`, {cwd: dir, stdio: 'inherit'})
 
           _path = require.resolve(package, {paths: [dir]})
         }
