@@ -82,7 +82,7 @@ for (const f in R)
   global.should.have.property(f)
 
 
-// cp.execSync('rm -rf no_node_modules/node_modules; true')
+cp.execSync('rm -rf no_node_modules/node_modules; true')
 // const install = fastRequire({install: true, search: ['no_node_modules']})
 //
 // install.should.have.property('fastRequire')

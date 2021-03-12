@@ -51,7 +51,17 @@ module.exports = options => {
         _path = require.resolve(package, {paths: [dir]})
       } catch (e) {
         if (install) {
-          const cmd = `npm install ${package} --production`
+          for (const packages in deps) {
+            const notInstalled = []
+
+            try {
+              require.resolve(package, {paths: [dir]})
+            } catch (e) {
+              notInstalled.push(package)
+            }
+          }
+
+          const cmd = `npm install ${notInstalled.join(' ')} --production`
 
           V(`fast-require:\t${cmd}`)
           require.cache = {}

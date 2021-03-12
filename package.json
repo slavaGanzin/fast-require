@@ -1,6 +1,6 @@
 {
   "name": "fast-require",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "Lazy require all packages from your package.json",
   "main": "index.js",
   "scripts": {
