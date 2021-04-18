@@ -47,13 +47,13 @@ module.exports = options => {
       let _path = null
 
 
+      const notInstalled = []
+
       try {
         _path = require.resolve(package, {paths: [dir]})
       } catch (e) {
         if (install) {
-          for (const packages in deps) {
-            const notInstalled = []
-
+          for (const package in deps) {
             try {
               require.resolve(package, {paths: [dir]})
             } catch (e) {
